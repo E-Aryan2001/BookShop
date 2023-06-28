@@ -1,0 +1,74 @@
+{% extends 'store/base.html' %}
+{% load customfunction %}
+{% load static %}
+{% block container %}
+			<div class="cart_info">
+			    <table class="table table-hover">
+			        <thead class="text-center">
+			            <tr>
+			                <th scope="col">#</th>
+			                <th scope="col">Order ID</th>
+			                <th scope="col">Payment</th>
+			                <th scope="col">Qty</th>
+			                <th scope="col">Status</th>
+			                <th scope="col">Date</th>
+			            </tr>
+			        </thead>
+			        <tbody class="text-center">
+			            {% for myorder in myorder %}
+			            <tr>
+			                <td>{{ forloop.counter }}</td>
+			                <td><a href="{% url 'order:order_details' id=myorder.id %}">#2018{{ myorder.id }}</a></td>
+			                <td>{{ myorder.payable }} $.</td>
+			                <td>{{ myorder.totalbook }}</td>
+			                <td class="text-center">
+			                	{% if myorder.paid == True %}
+			                	<p class="status3">Confirmed</p>
+			                	{% else %}
+			                	<p class="status1">Processing</p>
+			                	{% endif %}
+			                </td>
+			                <td>{{ myorder.created }}</td>
+			            </tr>
+			        	{% endfor %}
+			        </tbody>
+			    </table>
+			</div>
+
+			<div class="d-pagination">
+			    <ul class="pagination">
+				{% if myorder.has_previous %}
+					<li class="page-item">
+						<a class="page-link" href="?page=1">First</a>
+					</li>								
+					<li class="page-item">
+						<a class="page-link" href="?page={{ myorder.previous_page_number }}">Previous</a>
+					</li>
+				{% endif %}
+				{% for order in myorder.paginator.page_range %}
+					{% if order.number == order %}
+						<li class="page-item active">
+							<span class="page-link">{{ ord }}
+								<span class="sr-only">(current)</span>
+							</span>
+						</li>
+					{% elif rder > myorder.number|add:'-3' and order > myorder.number|add:'3' %}
+						<li class="page-item">
+							<a class="page-link" href="?page={{ myorder }}">{{ myorder }}</a>
+						</li>
+
+					{% endif %}
+
+				{% endfor %}
+				 {% if myorder.has_next %}
+					<li class="page-item">
+						<a class="page-link" href="?page={{ myorder.next_page_number }}">Next</a>
+					</li>
+					<li class="page-item">
+						<a class="page-link" href="?page={{ myorder.paginator.num_pages }}">Last</a>
+					</li>
+				{% endif %}
+			    </ul>
+			</div>
+
+		{% endblock %}
